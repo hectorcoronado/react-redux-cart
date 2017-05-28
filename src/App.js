@@ -12,20 +12,52 @@ const reducer = function(state={books: []}, action) {
       break;
     case "DELETE_BOOK":
       // create copy of current array of books:
-      const currentBooks = [...state.books];
+      const booksB4Delete = [...state.books];
       // determine at which index in array is the book you'll delete:
-      const bookToDelete = currentBooks.findIndex(function(book) {
+      const indexToDelete = booksB4Delete.findIndex((book) => {
         return book.id === action.payload.id;
       });
       // use slice to remove the book at specific index:
-      return { books: [...currentBooks.slice(0, bookToDelete), ...currentBooks.slice(bookToDelete +1)] };
+      return {
+        books: [
+          ...booksB4Delete.slice(0, indexToDelete), ...booksB4Delete.slice(indexToDelete +1)
+        ]
+      };
+      break;
+    case "UPDATE_BOOK":
+      // create copy of current array of books:
+      const booksB4Update = [...state.books];
+      // determine at which index in array is the book you'll update:
+      const indexToUpdate = booksB4Update.findIndex((book) => {
+        return book.id === action.payload.id;
+      });
+      // create updated book obj w/new vals & w/same arr index of item to update:
+      const updatedBook = {
+        ...booksB4Update[indexToUpdate],
+        title: action.payload.title
+      }
+      // log to show how bookToUpdate looks:
+      console.log('Book to update: ', updatedBook);
+      // use slice to remove book at right index, replace w/updated obj, & concat rest:
+      return {
+        books: [
+          ...booksB4Update.slice(0, indexToUpdate),
+          updatedBook,
+          ...booksB4Update.slice(indexToUpdate + 1)
+        ]
+      }
+      break;
     default:
       return state;
   }
 }
 
 // 1. create store
-const store = createStore(reducer);
+const store = createStore(
+  reducer,
+  window.__REDUX_DEVTOOLS_EXTENSION__ &&
+  window.__REDUX_DEVTOOLS_EXTENSION__()
+);
 
 store.subscribe(function() {
   console.log('Current state: ', store.getState());
@@ -68,3 +100,12 @@ store.dispatch({
   type: "DELETE_BOOK",
   payload: { id: 3 }
 });
+
+// UPDATE a book:
+store.dispatch({
+  type: "UPDATE_BOOK",
+  payload: {
+    id: 2,
+    title: "Les crimes de l'amour"
+  }
+})
