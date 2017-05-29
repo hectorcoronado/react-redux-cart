@@ -1,5 +1,11 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
 import { applyMiddleware, createStore } from 'redux';
 import logger from 'redux-logger';
+
+// import components:
+import BooksList from './components/pages/BooksList';
 
 // import combined reducers:
 import reducers from './reducers';
@@ -25,6 +31,13 @@ const store = createStoreWithMiddleware(
 //   console.log('Current state: ', store.getState());
 //   // console.log('Current price: ', store.getState()[1].price);
 // });
+
+ReactDOM.render(
+  <Provider store={store}>
+    <BooksList />
+  </Provider>,
+  document.getElementById('app')
+);
 
 // 2. create and dispatch actions:
 // POST a book:
