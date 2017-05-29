@@ -1,6 +1,5 @@
-'use strict';
-
-import { createStore } from 'redux';
+import { applyMiddleware, createStore } from 'redux';
+import logger from 'redux-logger';
 
 // import combined reducers:
 import reducers from './reducers';
@@ -14,16 +13,18 @@ import {
 } from './actions/booksActions';
 
 // 1. create store
-const store = createStore(
+const createStoreWithMiddleware = applyMiddleware(logger)(createStore);
+
+const store = createStoreWithMiddleware(
   reducers,
   window.__REDUX_DEVTOOLS_EXTENSION__ &&
   window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 
-store.subscribe(function() {
-  console.log('Current state: ', store.getState());
-  // console.log('Current price: ', store.getState()[1].price);
-});
+// store.subscribe(function() {
+//   console.log('Current state: ', store.getState());
+//   // console.log('Current price: ', store.getState()[1].price);
+// });
 
 // 2. create and dispatch actions:
 // POST a book:
