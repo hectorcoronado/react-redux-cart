@@ -5,6 +5,14 @@ import { createStore } from 'redux';
 // import combined reducers:
 import reducers from './reducers';
 
+// import actions:
+import { addToCart } from './actions/cartActions';
+import {
+  postBooks,
+  deleteBook,
+  updateBook
+} from './actions/booksActions';
+
 // 1. create store
 const store = createStore(
   reducers,
@@ -18,9 +26,9 @@ store.subscribe(function() {
 });
 
 // 2. create and dispatch actions:
-store.dispatch({
-  type: "POST_BOOK",
-  payload: [
+// POST a book:
+store.dispatch(postBooks(
+  [
     {
       id: 1,
       title: 'Ulysses',
@@ -34,39 +42,29 @@ store.dispatch({
       price: 15
     },
   ]
-});
+));
 
-// CREATE/POST a book:
-store.dispatch({
-  type: "POST_BOOK",
-  payload:
-    [{
-      id: 3,
-      title: 'Watchmen',
-      description: 'Graphic Novel',
-      price: 18
-    }]
-});
+store.dispatch(postBooks(
+  [{
+    id: 3,
+    title: 'Watchmen',
+    description: 'Graphic Novel',
+    price: 18
+  }]
+));
 
 // DELETE a book:
-store.dispatch({
-  type: "DELETE_BOOK",
-  payload: { id: 3 }
-});
+store.dispatch(deleteBook({ id: 3 }));
 
 // UPDATE a book:
-store.dispatch({
-  type: "UPDATE_BOOK",
-  payload: {
+store.dispatch(updateBook(
+  {
     id: 2,
     title: "Les crimes de l'amour"
   }
-});
+));
 
 // CART actions
 
 // ADD to cart:
-store.dispatch({
-  type: "ADD_TO_CART",
-  payload: [{ id: 2 }]
-});
+store.dispatch(addToCart([{id: 1}]));
