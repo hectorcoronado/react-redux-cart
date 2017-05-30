@@ -55,9 +55,17 @@ store.dispatch(postBooks(
       description: 'Sadist',
       price: 15
     },
+    {
+      id: 3,
+      title: 'Watchmen',
+      description: 'Graphic Novel',
+      price: 18
+    }
   ]
 ));
 
+
+/*
 store.dispatch(postBooks(
   [{
     id: 3,
@@ -82,3 +90,4 @@ store.dispatch(updateBook(
 
 // ADD to cart:
 store.dispatch(addToCart([{id: 1}]));
+*/
