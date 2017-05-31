@@ -39,6 +39,7 @@ ReactDOM.render(
   document.getElementById('app')
 );
 
+/*
 // 2. create and dispatch actions:
 // POST a book:
 store.dispatch(postBooks(
@@ -65,7 +66,6 @@ store.dispatch(postBooks(
 ));
 
 
-/*
 store.dispatch(postBooks(
   [{
     id: 3,

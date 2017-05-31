@@ -1,6 +1,14 @@
+const GET_BOOKS = "GET_BOOKS";
 const POST_BOOK = "POST_BOOK";
 const DELETE_BOOK = "DELETE_BOOK";
 const UPDATE_BOOK = "UPDATE_BOOK";
+
+// GET books:
+export function getBooks() {
+  return {
+    type: GET_BOOKS
+  }
+}
 
 // POST a book:
 export function postBooks(book) {
