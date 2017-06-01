@@ -6,6 +6,7 @@ import logger from 'redux-logger';
 
 // import components:
 import BooksList from './components/pages/BooksList';
+import Menu from './components/pages/Menu';
 
 // import combined reducers:
 import reducers from './reducers';
@@ -34,7 +35,10 @@ const store = createStoreWithMiddleware(
 
 ReactDOM.render(
   <Provider store={store}>
-    <BooksList />
+    <div>
+      <Menu />
+      <BooksList />
+    </div>
   </Provider>,
   document.getElementById('app')
 );
