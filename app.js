@@ -18,6 +18,79 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+/////////
+// API //
+/////////
+var mongoose = require('mongoose');
+
+// bookshop will be the name of the db:
+mongoose.connect('mongodb://localhost:27017/bookshop');
+
+var booksModel = require('./models/books.js');
+
+// --->>> POST BOOK(S) <<<---
+app.post('/books', function(req, res) {
+  var book = req.body;
+
+  booksModel.create(book, function(err, books) {
+    if (err) {
+      throw err;
+    }
+    res.json(books);
+  });
+});
+
+// --->>> GET BOOKS <<<---
+app.get('/books', function(req, res) {
+  booksModel.find(function(err, books) {
+    if (err) {
+      throw err;
+    }
+    res.json(books);
+  });
+});
+
+// --->>> UPDATE BOOK <<<---
+app.put('/books/:_id', function(req, res) {
+  var book = req.body,
+      query = req.params._id;
+
+  // if a field doesn't exist $set will add it:
+  var update = {
+    '$set': {
+      title: book.title,
+      description: book.description,
+      image: book.image,
+      price: book.price
+    }
+  };
+
+  // when true, returns the updated document:
+  var options = { new: true };
+
+  booksModel.findOneAndUpdate(query, update, options, function(err, books) {
+    if (err) {
+      throw err;
+    }
+    res.json(books);
+  });
+});
+
+// --->>> DELETE BOOK <<<---
+app.delete('/books/:_id', function(req, res) {
+  var query = { _id: req.params._id };
+
+  booksModel.remove(query, function(err, books) {
+    if (err) {
+      throw err;
+    }
+    res.json(books)
+  });
+});
+/////////////
+// End API //
+/////////////
+
 app.use('/', index);
 app.use('/users', users);
 
