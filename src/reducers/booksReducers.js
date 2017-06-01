@@ -2,19 +2,19 @@ const INIT_STATE = {
   books:
     [
       {
-        id: 1,
+        _id: 1,
         title: 'Ulysses',
         description: 'Modernist',
         price: 100
       },
       {
-        id: 2,
+        _id: 2,
         title: 'Aline et Valcour',
         description: 'Sadist',
         price: 150
       },
       {
-        id: 3,
+        _id: 3,
         title: 'Watchmen',
         description: 'Graphic Novel',
         price: 180
@@ -38,7 +38,7 @@ export function booksReducers (state=INIT_STATE, action) {
       const booksB4Delete = [...state.books];
       // determine at which index in array is the book you'll delete:
       const indexToDelete = booksB4Delete.findIndex((book) => {
-        return book.id === action.payload.id;
+        return book._id === action.payload._id;
       });
       // use slice to remove the book at specific index:
       return {
@@ -52,7 +52,7 @@ export function booksReducers (state=INIT_STATE, action) {
       const booksB4Update = [...state.books];
       // determine at which index in array is the book you'll update:
       const indexToUpdate = booksB4Update.findIndex((book) => {
-        return book.id === action.payload.id;
+        return book._id === action.payload._id;
       });
       // create updated book obj w/new vals & w/same arr index of item to update:
       const updatedBook = {

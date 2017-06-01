@@ -7,6 +7,7 @@ import { getBooks } from '../../actions/booksActions';
 
 import BookItem from './BookItem';
 import BooksForm from './BooksForm';
+import Cart from './Cart';
 
 class BooksList extends Component {
   componentDidMount() {
@@ -25,9 +26,9 @@ class BooksList extends Component {
         //     Buy Now
         //   </Button>
         // </div>
-        <Col xs={12} sm={6} md={4} key={booksArr.id}>
+        <Col xs={12} sm={6} md={4} key={booksArr._id}>
           <BookItem
-            id={booksArr.id}
+            _id={booksArr._id}
             title={booksArr.title}
             description={booksArr.description}
             price={booksArr.price}
@@ -38,6 +39,9 @@ class BooksList extends Component {
 
     return (
       <Grid>
+        <Row>
+          <Cart />
+        </Row>
         <Row style={{marginTop: '15px'}}>
           <Col xs={12} sm={6}>
             <BooksForm />
