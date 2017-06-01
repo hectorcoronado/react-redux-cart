@@ -3,7 +3,7 @@ import {Row, Col, Well, Button} from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { addToCart } from '../../actions/cartActions'
+import { addToCart, updateCart } from '../../actions/cartActions'
 
 class BookItem extends Component {
   // each time 'Buy Now' button is clicked, add book to Cart state w/handleCart func:
@@ -12,9 +12,28 @@ class BookItem extends Component {
       _id: this.props._id,
       title: this.props.title,
       description: this.props.description,
-      price: this.props.price
+      price: this.props.price,
+      quantity: 1
     }]
-    this.props.addToCart(book);
+    // check if cart is empty:
+    if (this.props.cart.length > 0) {
+      // cart is not empty:
+      let _id = this.props._id;
+      let cartIndex = this.props.cart.findIndex((cart) => {
+        return cart._id === _id;
+      })
+      if (cartIndex === -1) {
+        // if findIndex found no match, add to cart:
+        this.props.addToCart(book);
+      } else {
+        // if findIndex found a match, we need to update qty w/reducer; 2nd argument will become 'unit':
+        this.props.updateCart(_id, 1)
+      }
+
+    } else {
+      // cart is empty:
+      this.props.addToCart(book);
+    }
   }
 
   render() {
@@ -45,7 +64,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ addToCart }, dispatch)
+  return bindActionCreators({ addToCart, updateCart }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(BookItem);
