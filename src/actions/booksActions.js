@@ -6,6 +6,7 @@ const DELETE_BOOK = "DELETE_BOOK";
 const UPDATE_BOOK = "UPDATE_BOOK";
 const POST_BOOK_REJECTED = "POST_BOOK_REJECTED";
 const GET_BOOKS_REJECTED = "GET_BOOKS_REJECTED";
+const DELETE_BOOK_REJECTED = "DELETE_BOOK_REJECTED";
 
 // GET books:
 export function getBooks() {
@@ -53,10 +54,23 @@ export function postBooks(book) {
 
 // DELETE a book:
 export function deleteBook(id) {
-  return {
-    type: DELETE_BOOK,
-    payload: id
+  return function(dispatch) {
+    axios.delete('/books/' + id)
+      .then(function(response) {
+        dispatch({
+          type: DELETE_BOOK,
+          payload: id
+        })
+      })
+      .catch(function(err) {
+        dispatch({
+          type: DELETE_BOOK_REJECTED,
+          payload: err
+        })
+      })
   }
+
+
 };
 
 // UPDATE a book:
