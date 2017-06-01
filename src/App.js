@@ -7,6 +7,7 @@ import logger from 'redux-logger';
 // import components:
 import BooksList from './components/pages/BooksList';
 import Menu from './components/pages/Menu';
+import Footer from './components/pages/Footer';
 
 // import combined reducers:
 import reducers from './reducers';
@@ -38,6 +39,7 @@ ReactDOM.render(
     <div>
       <Menu />
       <BooksList />
+      <Footer />
     </div>
   </Provider>,
   document.getElementById('app')
