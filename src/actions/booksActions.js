@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 const GET_BOOKS = "GET_BOOKS";
 const POST_BOOK = "POST_BOOK";
 const DELETE_BOOK = "DELETE_BOOK";
@@ -12,10 +14,26 @@ export function getBooks() {
 
 // POST a book:
 export function postBooks(book) {
-  return {
-    type: POST_BOOK,
-    payload: book
+  return function(dispatch) {
+    axios.post('/books', book)
+      .then(function(response) {
+        dispatch({
+          type: POST_BOOK,
+          payload: response.data
+        })
+      })
+      .catch(function(err) {
+        dispatch({
+          type: POST_BOOK_REJECTED,
+          payload: "There was an error while posting."
+        })
+      });
   }
+
+  // return {
+  //   type: POST_BOOK,
+  //   payload: book
+  // }
 };
 
 // DELETE a book:
