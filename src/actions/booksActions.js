@@ -4,12 +4,27 @@ const GET_BOOKS = "GET_BOOKS";
 const POST_BOOK = "POST_BOOK";
 const DELETE_BOOK = "DELETE_BOOK";
 const UPDATE_BOOK = "UPDATE_BOOK";
+const POST_BOOK_REJECTED = "POST_BOOK_REJECTED";
+const GET_BOOKS_REJECTED = "GET_BOOKS_REJECTED";
 
 // GET books:
 export function getBooks() {
-  return {
-    type: GET_BOOKS
+  return function(dispatch) {
+    axios.get('/books')
+      .then(function(response) {
+        dispatch({
+          type: GET_BOOKS,
+          payload: response.data
+        })
+      })
+      .catch(function(err) {
+        dispatch({
+          type: GET_BOOKS_REJECTED,
+          payload: err
+        })
+      })
   }
+
 }
 
 // POST a book:

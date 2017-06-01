@@ -1,32 +1,14 @@
 const INIT_STATE = {
-  books:
-    [
-      {
-        _id: 1,
-        title: 'Ulysses',
-        description: 'Modernist',
-        price: 100
-      },
-      {
-        _id: 2,
-        title: 'Aline et Valcour',
-        description: 'Sadist',
-        price: 150
-      },
-      {
-        _id: 3,
-        title: 'Watchmen',
-        description: 'Graphic Novel',
-        price: 180
-      }
-    ]
+  books:[]
 };
 
 // BOOKS REDUCERS:
 export function booksReducers (state=INIT_STATE, action) {
   switch(action.type) {
     case "GET_BOOKS":
-      return {...state, books: [...state.books]}
+      // return {...state, books: [...state.books]}
+      // we GET our books from API to fill arr of books:
+      return {...state, books: [...action.payload]}
       break;
 
     case "POST_BOOK":
