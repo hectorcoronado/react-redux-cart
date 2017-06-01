@@ -26,7 +26,12 @@ class Menu extends Component {
               href="/cart"
             >
               Your Cart
-              <Badge className="badge">1</Badge>
+              {/* ternary to dynamically update Cart's badge: */}
+              {
+                (this.props.cartItemsNumber > 0) ?
+                (<Badge className="badge">{this.props.cartItemsNumber}</Badge>):
+                ('')
+              }
             </NavItem>
           </Nav>
         </Navbar.Collapse>
