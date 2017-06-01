@@ -28,17 +28,19 @@ export function booksReducers (state=INIT_STATE, action) {
     case "GET_BOOKS":
       return {...state, books: [...state.books]}
       break;
+
     case "POST_BOOK":
       // let books = state.books.concat(action.payload);
       // return {books};
       return { books: [...state.books, ...action.payload] };
       break;
+
     case "DELETE_BOOK":
       // create copy of current array of books:
       const booksB4Delete = [...state.books];
       // determine at which index in array is the book you'll delete:
       const indexToDelete = booksB4Delete.findIndex((book) => {
-        return book._id === action.payload._id;
+        return book._id.toString() === action.payload;
       });
       // use slice to remove the book at specific index:
       return {
@@ -47,6 +49,7 @@ export function booksReducers (state=INIT_STATE, action) {
         ]
       };
       break;
+
     case "UPDATE_BOOK":
       // create copy of current array of books:
       const booksB4Update = [...state.books];
