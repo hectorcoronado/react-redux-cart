@@ -1,13 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { applyMiddleware, createStore } from 'redux';
 import logger from 'redux-logger';
+import { applyMiddleware, createStore } from 'redux';
+import { Provider } from 'react-redux';
+import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 
 // import components:
 import BooksList from './components/pages/BooksList';
-import Menu from './components/pages/Menu';
-import Footer from './components/pages/Footer';
+import Cart from './components/pages/Cart';
+import BooksForm from './components/pages/BooksForm';
+import Main from './Main';
 
 // import combined reducers:
 import reducers from './reducers';
@@ -34,14 +36,20 @@ const store = createStoreWithMiddleware(
 //   // console.log('Current price: ', store.getState()[1].price);
 // });
 
-ReactDOM.render(
+const ROUTES = (
   <Provider store={store}>
-    <div>
-      <Menu />
-      <BooksList />
-      <Footer />
-    </div>
-  </Provider>,
+    <Router history={browserHistory}>
+      <Route path="/" component={Main}>
+        <IndexRoute component={BooksList} />
+        <Route path="/admin" component={BooksForm} />
+        <Route path="/cart" component={Cart} />
+      </Route>
+    </Router>
+  </Provider>
+)
+
+ReactDOM.render(
+  ROUTES,
   document.getElementById('app')
 );
 
