@@ -1,9 +1,12 @@
 import axios from 'axios';
 
 const ADD_TO_CART = "ADD_TO_CART";
+const GET_CART = "GET_CART";
 const UPDATE_CART = "UPDATE_CART";
 const DELETE_CART_ITEM = "DELETE_CART_ITEM";
 const ADD_TO_CART_REJECTED = "ADD_TO_CART_REJECTED";
+const GET_CART_REJECTED = "GET_CART_REJECTED";
+const UPDATE_CART_REJECTED = "UPDATE_CART_REJECTED";
 
 // ADD to cart:
 export function addToCart(cart) {
@@ -18,10 +21,29 @@ export function addToCart(cart) {
       .catch(function(err) {
         dispatch({
           type: ADD_TO_CART_REJECTED,
-          msg: 'Error'
+          msg: 'Error posting to cart.'
         })
       })
-  }
+  };
+}
+
+// GET cart:
+export function getCart() {
+  return function(dispatch) {
+    axios.get('/api/cart')
+      .then(function(response) {
+        dispatch({
+          type: GET_CART,
+          payload: response.data
+        })
+      })
+      .catch(function(err){
+        dispatch({
+          type: GET_CART_REJECTED,
+          msg: 'Error getting cart from session.'
+        })
+      })
+  };
 }
 
 // UPDATE cart:
@@ -42,10 +64,22 @@ export function updateCart(_id, unit, cart) {
     ...booksB4Update.slice(0, indexToUpdate),
     updatedBook,
     ...booksB4Update.slice(indexToUpdate + 1)
-  ]
-  return {
-    type: UPDATE_CART,
-    payload: cartUpdate
+  ];
+
+  return function(dispatch) {
+    axios.post('/api/cart', cartUpdate)
+      .then(function(response) {
+        dispatch({
+          type: UPDATE_CART,
+          payload: response.data
+        })
+      })
+      .catch(function(err) {
+        dispatch({
+          type: UPDATE_CART_REJECTED,
+          msg: 'Error'
+        })
+      })
   }
 }
 

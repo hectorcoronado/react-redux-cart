@@ -2,6 +2,15 @@
 
 export function cartReducers(state={cart: []}, action) {
   switch (action.type) {
+    case "GET_CART":
+      return {
+        ...state,
+        cart: action.payload,
+        totalAmount: totals(action.payload).amount,
+        totalQty: totals(action.payload).qty
+      }
+      break;
+
     case "ADD_TO_CART":
       // totalAmount & totalQty are calc'd below in 'totals', which returns an obj w/these properties:
       return {
@@ -12,7 +21,7 @@ export function cartReducers(state={cart: []}, action) {
       };
       break;
 
-    /* NOTE: All of this code needs to be refactored to make the cart updateable and persistent; we will execute all the logic in the cartUpdate action PRIOR to sending it to the reducer as action.payload
+    /* NOTE: All of this code needs to be refactored to make the cart updateable and persistent; we will move & execute all the logic in the cartUpdate action PRIOR to sending it to the reducer as action.payload
 
     case "UPDATE_CART":
       // create copy of current array of books:

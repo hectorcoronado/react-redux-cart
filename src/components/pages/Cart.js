@@ -5,7 +5,7 @@ import {
 } from 'react-bootstrap';
 import { bindActionCreators } from 'redux';
 
-import { deleteCartItem, updateCart } from '../../actions/cartActions';
+import { deleteCartItem, updateCart, getCart } from '../../actions/cartActions';
 
 class Cart extends Component {
   constructor(props) {
@@ -14,6 +14,10 @@ class Cart extends Component {
     this.state = {
       showModal: false
     };
+  }
+  
+  componentDidMount() {
+    this.props.getCart();
   }
 
   // fn to open modal:
@@ -156,7 +160,11 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ deleteCartItem, updateCart }, dispatch);
+  return bindActionCreators({
+    deleteCartItem,
+    updateCart,
+    getCart
+  }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cart);
