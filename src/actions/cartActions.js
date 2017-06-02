@@ -7,6 +7,7 @@ const DELETE_CART_ITEM = "DELETE_CART_ITEM";
 const ADD_TO_CART_REJECTED = "ADD_TO_CART_REJECTED";
 const GET_CART_REJECTED = "GET_CART_REJECTED";
 const UPDATE_CART_REJECTED = "UPDATE_CART_REJECTED";
+const DELETE_CART_ITEM_REJECTED = "DELETE_CART_ITEM_REJECTED";
 
 // ADD to cart:
 export function addToCart(cart) {
@@ -85,8 +86,19 @@ export function updateCart(_id, unit, cart) {
 
 // DELETE from cart:
 export function deleteCartItem(cart) {
-  return {
-    type: DELETE_CART_ITEM,
-    payload: cart
-  }
+  return function(dispatch) {
+    axios.post('/api/cart', cart)
+      .then(function(response) {
+        dispatch({
+          type: DELETE_CART_ITEM,
+          payload: response.data
+        })
+      })
+      .catch(function(err) {
+        dispatch({
+          type: DELETE_CART_ITEM_REJECTED,
+          msg: 'Error deleting from  cart.'
+        })
+      })
+  };
 }
