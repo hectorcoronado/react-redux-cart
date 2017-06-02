@@ -7,6 +7,7 @@ const UPDATE_BOOK = "UPDATE_BOOK";
 const POST_BOOK_REJECTED = "POST_BOOK_REJECTED";
 const GET_BOOKS_REJECTED = "GET_BOOKS_REJECTED";
 const DELETE_BOOK_REJECTED = "DELETE_BOOK_REJECTED";
+const RESET_BUTTON = "RESET_BUTTON";
 
 // GET books:
 export function getBooks() {
@@ -45,11 +46,6 @@ export function postBooks(book) {
         })
       });
   }
-
-  // return {
-  //   type: POST_BOOK,
-  //   payload: book
-  // }
 };
 
 // DELETE a book:
@@ -78,5 +74,12 @@ export function updateBook(book) {
   return {
     type: UPDATE_BOOK,
     payload: book
+  }
+};
+
+// RESET form button:
+export function resetButton() {
+  return {
+    type: RESET_BUTTON
   }
 };

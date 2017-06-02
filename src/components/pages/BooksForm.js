@@ -7,7 +7,7 @@ import { bindActionCreators } from 'redux';
 import { findDOMNode } from 'react-dom';
 import axios from 'axios';
 
-import { postBooks, deleteBook, getBooks } from '../../actions/booksActions';
+import { postBooks, deleteBook, getBooks, resetButton } from '../../actions/booksActions';
 
 class BooksForm extends Component {
   constructor(props) {
@@ -33,6 +33,17 @@ class BooksForm extends Component {
           img: ''
         })
       }.bind(this))
+  }
+
+  resetForm() {
+    // reset the form's button:
+    this.props.resetButton();
+    findDOMNode(this.refs.title).value = '';
+    findDOMNode(this.refs.description).value = '';
+    findDOMNode(this.refs.price).value = '';
+    this.setState({
+      img: ''
+    });
   }
 
   handleSubmit() {
@@ -125,10 +136,24 @@ class BooksForm extends Component {
                 />
               </FormGroup>
               <Button
-                bsStyle="primary"
-                onClick={this.handleSubmit.bind(this)}
+                // ternary to conditionally style button:
+                bsStyle={
+                  (!this.props.style) ?
+                  ("primary") :
+                  (this.props.style)
+                }
+                onClick={
+                  (!this.props.msg) ?
+                  (this.handleSubmit.bind(this)) :
+                  (this.resetForm.bind(this))
+                }
               >
-                Save Book
+                {/* ternary to conditionally render button text: */}
+                {
+                  (!this.props.msg) ?
+                  ('Save book') :
+                  (this.props.msg)
+                }
               </Button>
             </Panel>
             <Panel style={{marginTop: '25px'}}>
@@ -159,12 +184,14 @@ class BooksForm extends Component {
 
 function mapStateToProps(state) {
   return {
-    books: state.books.books
+    books: state.books.books,
+    msg: state.books.msg,
+    style: state.books.style
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ postBooks, deleteBook, getBooks }, dispatch);
+  return bindActionCreators({ postBooks, deleteBook, getBooks, resetButton }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(BooksForm);

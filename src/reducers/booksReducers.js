@@ -6,15 +6,22 @@ const INIT_STATE = {
 export function booksReducers (state=INIT_STATE, action) {
   switch(action.type) {
     case "GET_BOOKS":
-      // return {...state, books: [...state.books]}
       // we GET our books from API to fill arr of books:
       return {...state, books: [...action.payload]}
       break;
 
     case "POST_BOOK":
-      // let books = state.books.concat(action.payload);
-      // return {books};
-      return { books: [...state.books, ...action.payload] };
+      // updates button if post succeeds:
+      return {
+        books: [...state.books, ...action.payload],
+        msg: 'Saved! Click to continue',
+        style: "success"
+       };
+      break;
+
+    case "POST_BOOK_REJECTED":
+      // updates button if post fails:
+      return { ...state, msg: 'Please try again', style: "danger"}
       break;
 
     case "DELETE_BOOK":
@@ -55,6 +62,15 @@ export function booksReducers (state=INIT_STATE, action) {
         ]
       }
       break;
+
+    case "RESET_BUTTON":
+      return {
+        ...state,
+        msg: null,
+        style: "primary"
+      }
+      break;
+
     default:
       return state;
   }
