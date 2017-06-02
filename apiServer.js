@@ -14,9 +14,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-/////////
+/*******/
 // API //
-/////////
+/*******/
 var mongoose = require('mongoose');
 
 // bookshop will be the name of the db:
@@ -25,7 +25,9 @@ var booksModel = require('./models/books.js');
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, '# MongoDB - connection error: '));
-// --->>> SET UP SESSIONS <<<---
+///////////////////////////////////
+// --->>> SET UP SESSIONS <<<--- //
+///////////////////////////////////
 /*
 NOTE:
 secret signs the session id cookie
@@ -40,7 +42,7 @@ app.use(session({
   store: new MongoStore({ mongooseConnection: db, ttl: 2 * 24 * 60 * 60})
 }));
 
-// --->>> POST w/SESSION <<<---
+// --->>> POST CART w/SESSION <<<---
 app.post('/cart', function(req, res) {
   var cart = req.body;
   // NOTE NOTE NOTE
@@ -53,14 +55,19 @@ app.post('/cart', function(req, res) {
   });
 });
 
-//  --->>> GET SESSION CART <<<---
+//  --->>> GET CART w/SESSION <<<---
 app.get('/cart', function(req, res) {
   if (typeof req.session.cart !== 'undefined') {
     res.json(req.session.cart);
   }
 });
-// --->>> END SESSION SET UP <<<---
+//////////////////////////////////////
+// --->>> END SESSION SET UP <<<--- //
+//////////////////////////////////////
 
+///////////
+// BOOKS //
+///////////
 // --->>> POST BOOK(S) <<<---
 app.post('/books', function(req, res) {
   var book = req.body;
@@ -120,9 +127,45 @@ app.delete('/books/:_id', function(req, res) {
     res.json(books)
   });
 });
-/////////////
-// End API //
-/////////////
+///////////////
+// END BOOKS //
+///////////////
+
+////////////
+// IMAGES //
+////////////
+
+// --->>> GET IMAGE <<<---
+app.get('/images', function(req,res) {
+  var imgFolder = __dirname + '/public/images/';
+  // require file system:
+  var fs = require('fs');
+  // read all files in the dir:
+  fs.readdir(imgFolder, function(err, files) {
+    if (err) {
+      return console.error(err);
+    }
+    // create empty arr:
+    var filesArr = [],
+        i = 1;
+    // iterate over imgs & add to arr:
+    files.forEach(function(file) {
+      filesArr.push({ name: file });
+      i++;
+    });
+    // send json res w/array
+    res.json(filesArr);
+  })
+})
+
+////////////////
+// END IMAGES //
+////////////////
+
+/***********/
+// END API //
+/***********/
+
 
 app.listen(3001, function(err) {
   if (err) {
