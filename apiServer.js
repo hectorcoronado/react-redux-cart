@@ -2,6 +2,8 @@ var express = require('express');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var logger = require('morgan');
+var session = require('express-session');
+var MongoStore = require('connect-mongo')(session);
 
 var app = express();
 
@@ -19,8 +21,45 @@ var mongoose = require('mongoose');
 
 // bookshop will be the name of the db:
 mongoose.connect('mongodb://localhost:27017/bookshop');
-
 var booksModel = require('./models/books.js');
+
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, '# MongoDB - connection error: '));
+// --->>> SET UP SESSIONS <<<---
+/*
+NOTE:
+secret signs the session id cookie
+saveUninitialized: false means save only if there is something added to the cart
+resave: false means it won't resave if the cart hasn't changed
+ttl is 'time to leave' the session in the db and is currently set to 2 days (normally you'd want 2 to 4 weeks in production)
+*/
+app.use(session({
+  secret: 'mySecretString',
+  saveUninitialized: false,
+  resave: false,
+  store: new MongoStore({ mongooseConnection: db, ttl: 2 * 24 * 60 * 60})
+}));
+
+// --->>> POST w/SESSION <<<---
+app.post('/cart', function(req, res) {
+  var cart = req.body;
+  // NOTE NOTE NOTE
+  req.session.cart = cart; // THIS IS WHAT WE'RE SAVING W/SESS, YOU CAN CHANGE THIS TO STH ELSE IN OTHER PROJECTS!!!
+  req.session.save(function(err) {
+    if (err) {
+      throw err;
+    }
+    res.json(req.session.cart)
+  });
+});
+
+//  --->>> GET SESSION CART <<<---
+app.get('/cart', function(req, res) {
+  if (typeof req.session.cart !== 'undefined') {
+    res.json(req.session.cart);
+  }
+});
+// --->>> END SESSION SET UP <<<---
 
 // --->>> POST BOOK(S) <<<---
 app.post('/books', function(req, res) {

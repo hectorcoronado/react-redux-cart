@@ -1,12 +1,26 @@
+import axios from 'axios';
+
 const ADD_TO_CART = "ADD_TO_CART";
 const UPDATE_CART = "UPDATE_CART";
 const DELETE_CART_ITEM = "DELETE_CART_ITEM";
+const ADD_TO_CART_REJECTED = "ADD_TO_CART_REJECTED";
 
 // ADD to cart:
-export function addToCart(book) {
-  return {
-    type: ADD_TO_CART,
-    payload: book
+export function addToCart(cart) {
+  return function(dispatch) {
+    axios.post('/api/cart', cart)
+      .then(function(response) {
+        dispatch({
+          type: ADD_TO_CART,
+          payload: response.data
+        })
+      })
+      .catch(function(err) {
+        dispatch({
+          type: ADD_TO_CART_REJECTED,
+          msg: 'Error'
+        })
+      })
   }
 }
 
