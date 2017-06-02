@@ -11,11 +11,27 @@ export function addToCart(book) {
 }
 
 // UPDATE cart:
-export function updateCart(_id, unit) {
+export function updateCart(_id, unit, cart) {
+  // create copy of current array of books:
+  const booksB4Update = cart;
+  // determine at which index in array is the book you'll update:
+  const indexToUpdate = booksB4Update.findIndex((book) => {
+    return book._id === _id;
+  });
+  // create updated book obj w/new vals & w/same arr index of item to update:
+  const updatedBook = {
+    ...booksB4Update[indexToUpdate],
+    quantity: booksB4Update[indexToUpdate].quantity + unit
+  }
+  // use slice to remove book at right index, replace w/updated obj, & concat rest:
+  let cartUpdate = [
+    ...booksB4Update.slice(0, indexToUpdate),
+    updatedBook,
+    ...booksB4Update.slice(indexToUpdate + 1)
+  ]
   return {
     type: UPDATE_CART,
-    _id,
-    unit
+    payload: cartUpdate
   }
 }
 

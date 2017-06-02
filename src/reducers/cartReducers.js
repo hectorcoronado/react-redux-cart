@@ -12,6 +12,8 @@ export function cartReducers(state={cart: []}, action) {
       };
       break;
 
+    /* NOTE: All of this code needs to be refactored to make the cart updateable and persistent; we will execute all the logic in the cartUpdate action PRIOR to sending it to the reducer as action.payload
+
     case "UPDATE_CART":
       // create copy of current array of books:
       const booksB4Update = [...state.cart];
@@ -35,6 +37,16 @@ export function cartReducers(state={cart: []}, action) {
         cart: cartUpdate,
         totalAmount: totals(cartUpdate).amount,
         totalQty: totals(cartUpdate).qty
+      }
+      break;
+    */
+
+    case "UPDATE_CART":
+      return {
+        ...state,
+        cart: action.payload,
+        totalAmount: totals(action.payload).amount,
+        totalQty: totals(action.payload).qty
       }
       break;
 

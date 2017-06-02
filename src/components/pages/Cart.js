@@ -42,13 +42,14 @@ class Cart extends Component {
     this.props.deleteCartItem(cartAfterDelete);
   }
 
+  // 2nd arg to onInc & onDec is the 'unit' needed by updateCart Action
   onIncrement(_id) {
-    this.props.updateCart(_id, 1);
+    this.props.updateCart(_id, 1, this.props.cart);
   }
 
   onDecrement(_id, quantity) {
     if (quantity > 1) {
-      this.props.updateCart(_id, -1);
+      this.props.updateCart(_id, -1, this.props.cart);
     }
   }
 

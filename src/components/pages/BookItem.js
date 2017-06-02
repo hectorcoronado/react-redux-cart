@@ -27,7 +27,7 @@ class BookItem extends Component {
         this.props.addToCart(book);
       } else {
         // if findIndex found a match, we need to update qty w/reducer; 2nd argument will become 'unit':
-        this.props.updateCart(_id, 1)
+        this.props.updateCart(_id, 1, this.props.cart);
       }
 
     } else {
