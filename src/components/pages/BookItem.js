@@ -6,6 +6,20 @@ import { bindActionCreators } from 'redux';
 import { addToCart, updateCart } from '../../actions/cartActions'
 
 class BookItem extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isClicked: false
+    };
+  }
+
+  onReadMore() {
+    this.setState({
+      isClicked: true
+    });
+  }
+
   // each time 'Buy Now' button is clicked, add book to Cart state w/handleCart func:
   handleCart() {
     const book = [...this.props.cart, {
@@ -48,7 +62,26 @@ class BookItem extends Component {
         <Row>
           <Col xs={6} sm={8}>
             <h6>{this.props.title}</h6>
-            <p>{this.props.description}</p>
+            <p>
+              {
+                (this.props.description.length > 50 &&
+                  this.state.isClicked === false) ?
+                  (this.props.description.substring(0, 50)) :
+                  (this.props.description)
+              }
+              <button
+                className='link'
+                onClick={this.onReadMore.bind(this)}
+              >
+                {
+                  (this.state.isClicked === false &&
+                    this.props.description !== null &&
+                    this.props.description.length > 50) ?
+                    ('...Read more') :
+                    ('')
+                }
+              </button>
+          </p>
             <h6>USD: {this.props.price}</h6>
             <Button
               bsStyle="primary"

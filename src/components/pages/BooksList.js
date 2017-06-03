@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Grid, Col, Row, Button } from 'react-bootstrap';
+import { Carousel, Grid, Col, Row, Button } from 'react-bootstrap';
 
 import { getBooks } from '../../actions/booksActions';
 
@@ -18,14 +18,6 @@ class BooksList extends Component {
   render() {
     const booksList = this.props.books.map((booksArr) => {
       return(
-        // <div key={booksArr.id}>
-        //   <h2>{booksArr.title}</h2>
-        //   <h2>{booksArr.description}</h2>
-        //   <h2>{booksArr.price}</h2>
-        //   <Button bsStyle='primary'>
-        //     Buy Now
-        //   </Button>
-        // </div>
         <Col xs={12} sm={6} md={4} key={booksArr._id}>
           <BookItem
             _id={booksArr._id}
@@ -40,6 +32,24 @@ class BooksList extends Component {
 
     return (
       <Grid>
+        <Row>
+          <Carousel>
+            <Carousel.Item>
+              <img width={900} height={300} alt="900x300" src="/images/cuckoos-nest.jpg"/>
+              <Carousel.Caption>
+                <h3>First slide label</h3>
+                <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+              </Carousel.Caption>
+            </Carousel.Item>
+            <Carousel.Item>
+              <img width={900} height={300} alt="900x300" src="/images/gravitys-rainbow.jpg"/>
+              <Carousel.Caption>
+                <h3>Second slide label</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+              </Carousel.Caption>
+            </Carousel.Item>
+          </Carousel>
+        </Row>
         <Row>
           <Cart />
         </Row>

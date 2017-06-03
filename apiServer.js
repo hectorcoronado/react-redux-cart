@@ -122,7 +122,7 @@ app.delete('/books/:_id', function(req, res) {
 
   booksModel.remove(query, function(err, books) {
     if (err) {
-      throw err;
+      console.log(err);
     }
     res.json(books)
   });

@@ -15,13 +15,19 @@ export function booksReducers (state=INIT_STATE, action) {
       return {
         books: [...state.books, ...action.payload],
         msg: 'Saved! Click to continue',
-        style: "success"
+        style: "success",
+        validation: "success"
        };
       break;
 
     case "POST_BOOK_REJECTED":
       // updates button if post fails:
-      return { ...state, msg: 'Please try again', style: "danger"}
+      return {
+        ...state,
+        msg: 'Please try again',
+        style: "danger",
+        validation: "error"
+      }
       break;
 
     case "DELETE_BOOK":
@@ -67,7 +73,8 @@ export function booksReducers (state=INIT_STATE, action) {
       return {
         ...state,
         msg: null,
-        style: "primary"
+        style: "primary",
+        validation: null
       }
       break;
 
